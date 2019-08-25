@@ -31,18 +31,18 @@ import com.qnb.message.entity.User;
 @Component
 public class Util {
 
+	private static final String TMP = "/tmp/";
 	private static final String FILE_NAME = "qnb.xlsx";
 	private static String[] columns = { "Kayıt No", "Ad Soyad", "Mesaj", "Sicil No", "Kayıt Tarihi" };
 
 	public String createXLSFile(User user) throws FileNotFoundException, IOException {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		Date date = new Date();
-		String cwd = "/tmp";
-		File f = new File(cwd + FILE_NAME);
+		File f = new File(TMP + FILE_NAME);
 		if (f.exists() && !f.isDirectory()) {
 			XSSFWorkbook workbook = null;
 			XSSFSheet sheet;
-			FileInputStream file = new FileInputStream(new File(cwd + "/" + FILE_NAME));
+			FileInputStream file = new FileInputStream(new File(TMP + FILE_NAME));
 			workbook = new XSSFWorkbook(file);
 			sheet = workbook.getSheetAt(workbook.getActiveSheetIndex());
 			int rowCount = sheet.getLastRowNum() + 1;
@@ -57,7 +57,7 @@ public class Util {
 			c3.setCellValue(user.getSicil());
 			Cell c4 = empRow.createCell(4);
 			c4.setCellValue(formatter.format(date));
-			FileOutputStream out = new FileOutputStream(new File(cwd + FILE_NAME));
+			FileOutputStream out = new FileOutputStream(new File(TMP + FILE_NAME));
 			workbook.write(out);
 			out.close();
 			System.out.println("Kayit Eklendi");
@@ -97,7 +97,7 @@ public class Util {
 				sheet.autoSizeColumn(i);
 			}
 
-			FileOutputStream fileOut = new FileOutputStream(cwd + FILE_NAME);
+			FileOutputStream fileOut = new FileOutputStream(TMP + FILE_NAME);
 			workbook.write(fileOut);
 			fileOut.close();
 			workbook.close();
@@ -107,13 +107,12 @@ public class Util {
 	}
 
 	public Object getAllMessages() {
-		
+
 		List<User> userList = new ArrayList<>();
-		String cwd = "/tmp";
 		// Creating a Workbook from an Excel file (.xls or .xlsx)
-        Workbook workbook = null;
+		Workbook workbook = null;
 		try {
-			workbook = WorkbookFactory.create(new File(cwd + FILE_NAME));
+			workbook = WorkbookFactory.create(new File(TMP + FILE_NAME));
 		} catch (EncryptedDocumentException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -125,55 +124,51 @@ public class Util {
 			e1.printStackTrace();
 		}
 
-        // Retrieving the number of sheets in the Workbook
-        System.out.println("Workbook has " + workbook.getNumberOfSheets() + " Sheets : ");
+		// Retrieving the number of sheets in the Workbook
+		System.out.println("Workbook has " + workbook.getNumberOfSheets() + " Sheets : ");
 
+		// Getting the Sheet at index zero
+		Sheet sheet = workbook.getSheetAt(0);
 
-        // Getting the Sheet at index zero
-        Sheet sheet = workbook.getSheetAt(0);
+		// Create a DataFormatter to format and get each cell's value as String
+		DataFormatter dataFormatter = new DataFormatter();
 
-        // Create a DataFormatter to format and get each cell's value as String
-        DataFormatter dataFormatter = new DataFormatter();
+		// 1. You can obtain a rowIterator and columnIterator and iterate over them
+		System.out.println("\n\nIterating over Rows and Columns using Iterator\n");
+		Iterator<Row> rowIterator = sheet.rowIterator();
+		while (rowIterator.hasNext()) {
+			Row row = rowIterator.next();
 
-        // 1. You can obtain a rowIterator and columnIterator and iterate over them
-        System.out.println("\n\nIterating over Rows and Columns using Iterator\n");
-        Iterator<Row> rowIterator = sheet.rowIterator();
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
+			// Now let's iterate over the columns of the current row
+			Iterator<Cell> cellIterator = row.cellIterator();
 
-            // Now let's iterate over the columns of the current row
-            Iterator<Cell> cellIterator = row.cellIterator();
+			Cell cell = cellIterator.next();
+			String cellValue = dataFormatter.formatCellValue(cell);
+			Cell cell2 = cellIterator.next();
+			String cellValue2 = dataFormatter.formatCellValue(cell2);
+			Cell cell3 = cellIterator.next();
+			String cellValue3 = dataFormatter.formatCellValue(cell3);
+			Cell cell4 = cellIterator.next();
+			String cellValue4 = dataFormatter.formatCellValue(cell4);
+			Cell cell5 = cellIterator.next();
+			String cellValue5 = dataFormatter.formatCellValue(cell5);
+			User u = new User();
+			u.setId(cellValue);
+			u.setName(cellValue2);
+			u.setMessage(cellValue3);
+			u.setSicil(cellValue4);
+			u.setDate(cellValue5);
+			userList.add(u);
+		}
 
-           
-           
-                Cell cell = cellIterator.next();
-                String cellValue = dataFormatter.formatCellValue(cell);
-                Cell cell2 = cellIterator.next();
-                String cellValue2 = dataFormatter.formatCellValue(cell2);
-                Cell cell3 = cellIterator.next();
-                String cellValue3 = dataFormatter.formatCellValue(cell3);
-                Cell cell4 = cellIterator.next();
-                String cellValue4 = dataFormatter.formatCellValue(cell4);
-                Cell cell5 = cellIterator.next();
-                String cellValue5 = dataFormatter.formatCellValue(cell5);
-                User u = new User();
-                u.setId(cellValue);
-                u.setName(cellValue2);
-                u.setMessage(cellValue3);
-                u.setSicil(cellValue4);
-                u.setDate(cellValue5);
-                userList.add(u); 
-        }
-
-
-        // Closing the workbook
-        try {
+		// Closing the workbook
+		try {
 			workbook.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
+
 		return userList;
-    }
 	}
+}
