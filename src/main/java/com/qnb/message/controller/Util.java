@@ -37,7 +37,7 @@ public class Util {
 	public String createXLSFile(User user) throws FileNotFoundException, IOException {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		Date date = new Date();
-		String cwd = "/";
+		String cwd = "/tmp";
 		File f = new File(cwd + FILE_NAME);
 		if (f.exists() && !f.isDirectory()) {
 			XSSFWorkbook workbook = null;
@@ -109,7 +109,7 @@ public class Util {
 	public Object getAllMessages() {
 		
 		List<User> userList = new ArrayList<>();
-		String cwd = "/";
+		String cwd = "/tmp";
 		// Creating a Workbook from an Excel file (.xls or .xlsx)
         Workbook workbook = null;
 		try {
