@@ -114,13 +114,10 @@ public class Util {
 		try {
 			workbook = WorkbookFactory.create(new File(TMP + FILE_NAME));
 		} catch (EncryptedDocumentException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (InvalidFormatException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -162,13 +159,6 @@ public class Util {
 		}
 
 		// Closing the workbook
-		try {
-			workbook.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 		return userList;
 	}
 }
