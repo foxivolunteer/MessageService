@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript"
+	src="webjars/jquery/3.3.1-1/jquery.min.js"></script>
+<script type="text/javascript"
+	src="webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<link rel="stylesheet"
+	href="webjars/bootstrap/4.1.3/css/bootstrap.min.css">
+
+<title>Uye bildirim Sayfasi</title>
+</head>
+<body>
+	<div class="container">
+		<h2>Mesaj Listesi</h2>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Kayit No</th>
+					<th>Ad Soyad</th>
+					<th>Mesaj</th>
+					<th>Sicil No</th>
+					<th>Kayit Tarihi</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="messages :${data}">
+							<td th:text="${messages.id}"></td>
+							<td th:text="${messages.name}"></td>
+							<td th:text="${messages.message}"></td>
+							<td th:text="${messages.sicil}"></td>
+							<td th:text="${messages.date}"></td>
+						</tr>
+			</tbody>
+		</table>
+		<p class="mb-0">Yeni bir öneri eklemek için linke tıklayabilirsiniz. <a href="/" class="badge badge-success">Öneri Formu</a></p>
+	</div>
+
+</body>
+</html>

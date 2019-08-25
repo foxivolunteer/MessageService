@@ -6,15 +6,22 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
@@ -98,4 +105,75 @@ public class Util {
 			return "redirect:/success";
 		}
 	}
-}
+
+	public Object getAllMessages() {
+		
+		List<User> userList = new ArrayList<>();
+		String cwd = System.getProperty("user.dir");
+		// Creating a Workbook from an Excel file (.xls or .xlsx)
+        Workbook workbook = null;
+		try {
+			workbook = WorkbookFactory.create(new File(cwd + "/" + FILE_NAME));
+		} catch (EncryptedDocumentException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (InvalidFormatException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+        // Retrieving the number of sheets in the Workbook
+        System.out.println("Workbook has " + workbook.getNumberOfSheets() + " Sheets : ");
+
+
+        // Getting the Sheet at index zero
+        Sheet sheet = workbook.getSheetAt(0);
+
+        // Create a DataFormatter to format and get each cell's value as String
+        DataFormatter dataFormatter = new DataFormatter();
+
+        // 1. You can obtain a rowIterator and columnIterator and iterate over them
+        System.out.println("\n\nIterating over Rows and Columns using Iterator\n");
+        Iterator<Row> rowIterator = sheet.rowIterator();
+        while (rowIterator.hasNext()) {
+            Row row = rowIterator.next();
+
+            // Now let's iterate over the columns of the current row
+            Iterator<Cell> cellIterator = row.cellIterator();
+
+           
+           
+                Cell cell = cellIterator.next();
+                String cellValue = dataFormatter.formatCellValue(cell);
+                Cell cell2 = cellIterator.next();
+                String cellValue2 = dataFormatter.formatCellValue(cell2);
+                Cell cell3 = cellIterator.next();
+                String cellValue3 = dataFormatter.formatCellValue(cell3);
+                Cell cell4 = cellIterator.next();
+                String cellValue4 = dataFormatter.formatCellValue(cell4);
+                Cell cell5 = cellIterator.next();
+                String cellValue5 = dataFormatter.formatCellValue(cell5);
+                User u = new User();
+                u.setId(cellValue);
+                u.setName(cellValue2);
+                u.setMessage(cellValue3);
+                u.setSicil(cellValue4);
+                u.setDate(cellValue5);
+                userList.add(u);
+        }
+
+
+        // Closing the workbook
+        try {
+			workbook.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+		return userList;
+    }
+	}
