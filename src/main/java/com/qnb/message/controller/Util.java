@@ -162,7 +162,7 @@ public class Util {
                 u.setMessage(cellValue3);
                 u.setSicil(cellValue4);
                 u.setDate(cellValue5);
-                userList.add(u);
+                userList.add(u); 
         }
 
 
