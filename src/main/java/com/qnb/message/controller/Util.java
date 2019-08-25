@@ -37,8 +37,8 @@ public class Util {
 	public String createXLSFile(User user) throws FileNotFoundException, IOException {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		Date date = new Date();
-		String cwd = System.getProperty("user.dir");
-		File f = new File(cwd + "/" + FILE_NAME);
+		String cwd = "/";
+		File f = new File(cwd + FILE_NAME);
 		if (f.exists() && !f.isDirectory()) {
 			XSSFWorkbook workbook = null;
 			XSSFSheet sheet;
@@ -57,7 +57,7 @@ public class Util {
 			c3.setCellValue(user.getSicil());
 			Cell c4 = empRow.createCell(4);
 			c4.setCellValue(formatter.format(date));
-			FileOutputStream out = new FileOutputStream(new File(cwd + "/" + FILE_NAME));
+			FileOutputStream out = new FileOutputStream(new File(cwd + FILE_NAME));
 			workbook.write(out);
 			out.close();
 			System.out.println("Kayit Eklendi");
@@ -97,7 +97,7 @@ public class Util {
 				sheet.autoSizeColumn(i);
 			}
 
-			FileOutputStream fileOut = new FileOutputStream(cwd + "/" + FILE_NAME);
+			FileOutputStream fileOut = new FileOutputStream(cwd + FILE_NAME);
 			workbook.write(fileOut);
 			fileOut.close();
 			workbook.close();
@@ -109,11 +109,11 @@ public class Util {
 	public Object getAllMessages() {
 		
 		List<User> userList = new ArrayList<>();
-		String cwd = System.getProperty("user.dir");
+		String cwd = "/";
 		// Creating a Workbook from an Excel file (.xls or .xlsx)
         Workbook workbook = null;
 		try {
-			workbook = WorkbookFactory.create(new File(cwd + "/" + FILE_NAME));
+			workbook = WorkbookFactory.create(new File(cwd + FILE_NAME));
 		} catch (EncryptedDocumentException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
