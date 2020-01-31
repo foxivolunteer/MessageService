@@ -38,11 +38,11 @@ public class Util {
 	public String createXLSFile(User user) throws FileNotFoundException, IOException {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		Date date = new Date();
-		File f = new File(TMP + FILE_NAME);
+		File f = new File(FILE_NAME);
 		if (f.exists() && !f.isDirectory()) {
 			XSSFWorkbook workbook = null;
 			XSSFSheet sheet;
-			FileInputStream file = new FileInputStream(new File(TMP + FILE_NAME));
+			FileInputStream file = new FileInputStream(new File(FILE_NAME));
 			workbook = new XSSFWorkbook(file);
 			sheet = workbook.getSheetAt(workbook.getActiveSheetIndex());
 			int rowCount = sheet.getLastRowNum() + 1;
@@ -57,7 +57,7 @@ public class Util {
 			c3.setCellValue(user.getSicil());
 			Cell c4 = empRow.createCell(4);
 			c4.setCellValue(formatter.format(date));
-			FileOutputStream out = new FileOutputStream(new File(TMP + FILE_NAME));
+			FileOutputStream out = new FileOutputStream(new File(FILE_NAME));
 			workbook.write(out);
 			out.close();
 			System.out.println("Kayit Eklendi");
@@ -97,7 +97,7 @@ public class Util {
 				sheet.autoSizeColumn(i);
 			}
 
-			FileOutputStream fileOut = new FileOutputStream(TMP + FILE_NAME);
+			FileOutputStream fileOut = new FileOutputStream(FILE_NAME);
 			workbook.write(fileOut);
 			fileOut.close();
 			workbook.close();
@@ -112,7 +112,7 @@ public class Util {
 		// Creating a Workbook from an Excel file (.xls or .xlsx)
 		Workbook workbook = null;
 		try {
-			workbook = WorkbookFactory.create(new File(TMP + FILE_NAME));
+			workbook = WorkbookFactory.create(new File(FILE_NAME));
 		} catch (EncryptedDocumentException e1) {
 			e1.printStackTrace();
 		} catch (InvalidFormatException e1) {
